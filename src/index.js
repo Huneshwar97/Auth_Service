@@ -7,6 +7,8 @@ const apiRoutes = require('./routes/index');
 
 const app = express();
 
+
+
 const prepareAndStartServer = () => {
 
     app.use(bodyParser.json());
