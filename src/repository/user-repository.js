@@ -11,6 +11,7 @@ class UserRepository {
             throw error;
         }
     }
+
     async destroy(userId){
         try{
             const user =await User.destroy({
@@ -34,6 +35,19 @@ class UserRepository {
             return user;
         }
         catch (error){
+            console.log('Something went wrong at repository level');
+            throw error;
+        }
+    }
+
+    async getByEmail(userEmail){
+        try {
+            const user = await User.findOne({where:{
+                email:userEmail
+            }})
+            console.log(user);
+            return user;
+        } catch (error) {
             console.log('Something went wrong at repository level');
             throw error;
         }
