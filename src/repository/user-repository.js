@@ -45,7 +45,6 @@ class UserRepository {
             const user = await User.findOne({where:{
                 email:userEmail
             }})
-            console.log(user);
             return user;
         } catch (error) {
             console.log('Something went wrong at repository level');

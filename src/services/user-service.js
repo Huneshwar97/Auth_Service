@@ -42,7 +42,24 @@ class UserService {
             console.log('Something went wrong at signIn process');
             throw error;
         }
-    }                            
+    }
+    
+    async isAuthenticated(token){
+        try {
+            const response = this.verifyToken(token);
+            if(!response){
+                throw {error:'invalid  a token'}
+            }
+            const user = await this.userRepository.getById(response.id);
+            if(!user){
+                throw {error: 'No user with the corresponding token exists'}
+            }
+            return user.id;
+        } catch (error) {
+            console.log('Something went wrong at token service validation');
+            throw error;
+        }
+    }
 
     createToken(user){
         try {
@@ -60,8 +77,8 @@ class UserService {
             const response = jwt.verify(token,JWT_KEY);
             return response;
         } catch (error) {
-            console.log('Something went wrong at token validation');
-            throw error;
+            console.log('Error verifying token:', error.message);
+            throw new Error('Invalid token');
         }
     }
 
