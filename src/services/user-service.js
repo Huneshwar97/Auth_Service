@@ -6,6 +6,8 @@ const {JWT_KEY} = require('../config/serverConfig');
 const UserRepository = require('../repository/user-repository');
 const AppErrors = require('../utils/error-handler');
 
+
+
 class UserService {
     constructor(){
         this.userRepository = new UserRepository();
@@ -21,12 +23,7 @@ class UserService {
                 throw error;
             }
             console.log('Something went wrong at service layer');
-            throw new AppErrors(
-                'ServerError',
-                'Something went wrong in service',
-                'Logical Issued Find',
-                500
-            );
+            throw error;
         }
     }
 
@@ -34,10 +31,9 @@ class UserService {
         try {
             //step 1-> fetch the user using the email
             const user = await this.userRepository.getByEmail(email);
-            console.log(user);
+           
             //step2-> compare the incoming plain password with the stored encrypted password
-            console.log(plainPassword);
-            console.log(user.password);
+            
             const passwordMatch = this.checkPassword(plainPassword,user.password);
 
             if(!passwordMatch){
@@ -48,6 +44,9 @@ class UserService {
             const newJWT = this.createToken({email:user.email,id:user.id});
             return newJWT;
         } catch (error) {
+            if(error.name == 'AttributesNotFound'){
+                throw error;
+            }
             console.log('Something went wrong at signIn process');
             throw error;
         }
