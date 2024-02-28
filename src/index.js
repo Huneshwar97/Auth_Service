@@ -26,9 +26,9 @@ const prepareAndStartServer = () => {
         //u1.addRole(r1);
         //u1.getRole()//r1.getUser()//u1.hasRole(r1)    
 
-        if(process.env.DB_SYNC){
-            db.sequelize.sync ({alter:true});
-        }
+        // if(process.env.DB_SYNC){
+        //     db.sequelize.sync ({alter:true});
+        // }
     })
 }
 

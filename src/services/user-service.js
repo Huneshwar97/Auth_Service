@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const {JWT_KEY} = require('../config/serverConfig');
 
 const UserRepository = require('../repository/user-repository');
+const AppErrors = require('../utils/error-handler');
 
 class UserService {
     constructor(){
@@ -16,8 +17,16 @@ class UserService {
             return user;
         }
         catch(error){
+            if(error.name == 'SequelizeValidationError'){
+                throw error;
+            }
             console.log('Something went wrong at service layer');
-            throw error;
+            throw new AppErrors(
+                'ServerError',
+                'Something went wrong in service',
+                'Logical Issued Find',
+                500
+            );
         }
     }
 
